@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Upload and Summarization</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(83, 92, 192, 0.1);
+            text-align: center;
+            width: 80%;
+            max-width: 600px;
+        }
+        #file-upload {
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        #file-input {
+            display: none;
+        }
+        #file-name {
+            font-style: italic;
+            color: #888;
+            margin-bottom: 10px;
+        }
+        #submit-btn {
+            padding: 10px 20px;
+            background-color: #7474de;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .summary-container {
+            margin-top: 20px;
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+            text-align: left;
+        }
+        .summary-text {
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Upload a PDF file</h2>
+        <form id="upload-form" action="/upload" method="post" enctype="multipart/form-data">
+            <div>
+                <label for="pdf_file">Choose a PDF file:</label>
+                <input type="file" id="pdf_file" name="pdf_file" accept=".pdf" onchange="displayFileName(this)" required>
+            </div>
+            <button type="submit" id="submit-btn">Upload and Summarize</button>
+        </form>
+
+        <div class="summary-container">
+            <h3>Summarized Text</h3>
+            <div id="summary-text" class="summary-text">
+                <!-- Summarized text will be displayed here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function displayFileName(input) {
+            if (input.files.length > 0) {
+                document.getElementById("file-name").innerText = "Selected file: " + input.files[0].name;
+            } else {
+                document.getElementById("file-name").innerText = "";
+            }
+        }
+        function displaySummarizedText(text) {
+            document.getElementById("summary-text").innerText = text;
+        }
+    </script>
+</body>
+</html>

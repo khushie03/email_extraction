@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF Upload and Summarization</title>
+    <title>User Authentication</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -21,18 +21,6 @@
             box-shadow: 0 0 10px rgba(83, 92, 192, 0.1);
             text-align: center;
         }
-        #file-upload {
-            cursor: pointer;
-            margin-bottom: 10px;
-        }
-        #file-input {
-            display: none;
-        }
-        #file-name {
-            font-style: italic;
-            color: #888;
-            margin-bottom: 10px;
-        }
         #submit-btn {
             padding: 10px 20px;
             background-color: #7474de;
@@ -45,31 +33,18 @@
 </head>
 <body>
     <div class="container">
-        <h2>Upload a PDF file</h2>
-        <form id="upload-form" action="/upload" method="post" enctype="multipart/form-data">
+        <h2>User Authentication</h2>
+        <form id="auth-form" action="/result" method="post">
             <div>
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required>
+                <label for="user_type">User Type:</label>
+                <input type="text" id="user_type" name="user_type" required>
             </div>
             <div>
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
             </div>
-            <label for="file-input" id="file-upload">Choose file</label>
-            <input type="file" id="file-input" name="pdf_file" accept=".pdf" onchange="displayFileName(this)" required>
-            <div id="file-name"></div>
             <button type="submit" id="submit-btn">Submit</button>
         </form>
     </div>
-
-    <script>
-        function displayFileName(input) {
-            if (input.files.length > 0) {
-                document.getElementById("file-name").innerText = "Selected file: " + input.files[0].name;
-            } else {
-                document.getElementById("file-name").innerText = "";
-            }
-        }
-    </script>
 </body>
 </html>
