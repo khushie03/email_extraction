@@ -66,7 +66,7 @@ def extraction_and_summarization(pdf_path):
     with open(output_file_path, "w", encoding="utf-8") as file:
         file.write(text_final)
     
-    return output_file_path 
+    return text_final 
 
 def preprocess_text(text):
     text = remove_stop_words(text)

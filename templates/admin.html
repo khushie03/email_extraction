@@ -40,26 +40,26 @@
     <div class="container">
         <h2>Admin Page</h2>
         <h4>User Details</h4>
-        <form action="/send_emails" method="get">
-            <button type="submit">Send Emails to All Users</button>
-        </form>
-        <h4>User Details</h4>
         <table>
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Name</th>
-                    <th>Email</th>
+                    <th>User Type</th>
+                    <th>Password</th>
                     <th>Number of Tokens</th>
+                    <th>Session Time</th>
+                    <th>File Name</th>
                 </tr>
             </thead>
             <tbody>
                 {% for user in users %}
                 <tr>
                     <td>{{ user.id }}</td>
-                    <td>{{ user.name }}</td>
-                    <td>{{ user.email_id }}</td>
+                    <td>{{ user.user_type }}</td>
+                    <td>{{ user.password }}</td>
                     <td>{{ user.number_of_tokens }}</td>
+                    <td>{{ user.session_time }}</td>
+                    <td>{{ user.file_name }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
