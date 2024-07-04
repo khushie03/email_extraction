@@ -2,6 +2,7 @@ import os
 from flask import Flask, render_template, request, redirect, url_for, session, send_file
 from werkzeug.utils import secure_filename
 import mysql.connector
+from functools import wraps
 from summarizer import token_count
 from main import extraction_and_summarization
 from send_message import send_message
@@ -16,6 +17,14 @@ cnx = mysql.connector.connect(
     password="Prusshita@1234",
     database="email_extractor"
 )
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_type' not in session or 'password' not in session:
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
 
 @app.route('/')
 def home():
@@ -49,7 +58,7 @@ def login():
         else:
             return redirect(url_for('user_data'))
     else:
-        return redirect(url_for('user'))
+        return render_template('user.html')
 
 @app.route('/user', methods=['GET', 'POST'])
 def user():
@@ -82,6 +91,7 @@ def user():
         return render_template('user.html')
 
 @app.route('/result', methods=['GET', 'POST'])
+@login_required
 def result():
     user_type = session.get('user_type')
     password = session.get('password')
@@ -128,8 +138,8 @@ def result():
         cursor.close()
         return "Summary file path not found."
 
-
 @app.route('/user_data', methods=['GET', 'POST'])
+@login_required
 def user_data():
     if request.method == 'POST':
         session['user_type'] = request.form['user_type']
@@ -138,7 +148,21 @@ def user_data():
     else:
         return render_template('user_data.html')
 
+@app.route('/user_selected', methods = ['GET'])
+@login_required
+def user_selected():
+    if session.get('user_type') != 'user':
+        return redirect(url_for('login'))
+
+    cursor = cnx.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM user_details")
+    users = cursor.fetchall()
+    cursor.close()
+    return render_template('user_selected.html', users=users)
+    
+
 @app.route('/summarizer', methods=['GET', 'POST'])
+@login_required
 def summarizer():
     if request.method == 'POST':
         if 'pdf_file' not in request.files:
@@ -179,16 +203,16 @@ def summarizer():
     
     return render_template('summarizer.html', summary_text='')
 
-
 @app.route('/download')
+@login_required
 def download_file():
     summary_file_path = session.get('summary_file_path', '')
     if summary_file_path:
         return send_file(summary_file_path, as_attachment=True)
     return redirect(url_for('result'))
 
-
 @app.route('/send_emails')
+@login_required
 def send_emails():
     cursor = cnx.cursor()
     cursor.execute("SELECT name, email_id, number_of_tokens FROM user_details")
@@ -201,7 +225,11 @@ def send_emails():
     return "Emails sent successfully."
 
 @app.route('/admin')
+@login_required
 def admin():
+    if session.get('user_type') != 'admin':
+        return redirect(url_for('login'))
+
     cursor = cnx.cursor(dictionary=True)
     cursor.execute("SELECT * FROM user_details")
     users = cursor.fetchall()
