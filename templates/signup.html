@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #96d5e8 0%, #2e3b8e 100%);
+            color: #0b0505;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 40px auto;
+            background: #c3d6e8;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: black;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        select,
+        input[type="password"],
+        input[type="file"],
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #574f71;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        select,
+        input[type="password"],
+        input[type="file"] {
+            background-color: #f9f9f9;
+        }
+
+        button {
+            background-color: #6a82fb;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-transform: uppercase;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #5c5ffc;
+        }
+    </style>
+</head>
+<body>
+    <form action="{{ url_for('register') }}" method="POST" enctype="multipart/form-data">
+        
+        
+        <label for="name">name</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="age">age:</label>
+        <input type="number" id="age" name="age" required>
+
+        <label for="dob">dob</label>
+        <input type="date" id="dob" name="dob" required>
+
+        <label for="country">Country:</label>
+        <select id="country" name="country" required>
+            <option value="USA">USA</option>
+            <option value="Canada">Canada</option>
+            <option value="UK">UK</option>
+            <option value="Australia">Australia</option>
+            <option value="India">India</option>
+        </select>
+
+        <label for="phone_number">Phone Number:</label>
+        <input type="text" id="phone_number" name="phone_number" required>
+
+        <label for="password">Enter Password:</label>
+        <input type="password" id="password" name="password" required>
+
+        <label for="reenter_password">Re-enter Password:</label>
+        <input type="password" id="reenter_password" name="reenter_password" required>
+
+        <label for="usertype">Usertype:</label>
+        <select id="usertype" name="usertype" required>
+            <option value="Admin">Admin</option>
+            <option value="User">User</option>
+        </select>
+
+        <button type="submit">Register</button>
+    </form>
+</body>
+</html>

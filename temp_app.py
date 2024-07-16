@@ -77,7 +77,7 @@ def user():
         
         if result is None:
             cursor.close()
-            return "User type not found"
+            return "User type not found."
         
         if password != result['Password']:
             cursor.close()
@@ -98,6 +98,10 @@ def result():
     password = session.get('password')
     filename = session.get('filename')
     summary_file_path = session.get('summary_file_path', '')
+    if user_type != 'admin':
+        redirect(url_for('login'))
+    if user_type != 'user':
+        redirect(url_for('login'))
     if isinstance(summary_file_path, tuple):
         summary_file_path = summary_file_path[0]
     cursor = cnx.cursor(dictionary=True)
@@ -144,8 +148,8 @@ def user_data():
         session['password'] = request.form['password']
         return redirect(url_for('summarizer'))
     else:
+        
         return render_template('user_data.html')
-
 
 @app.route('/user_selected', methods=['GET'])
 @login_required
@@ -169,6 +173,7 @@ def summarizer():
         if file.filename == '':
             return "No selected file"
         if file and file.filename.endswith('.pdf'):
+            
             filename = secure_filename(file.filename)
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(file_path)
@@ -225,7 +230,6 @@ def send_emails():
 def admin():
     if session.get('user_type') != 'admin':
         return redirect(url_for('login'))
-
     cursor = cnx.cursor(dictionary=True)
     cursor.execute("SELECT * FROM user_details")
     users = cursor.fetchall()
